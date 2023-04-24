@@ -1,0 +1,47 @@
+.managment-container{
+    height: 100vh;
+    width: 100%;
+    background-color: bisque;
+}
+
+.gestion{
+    height: 100vh;
+}
+
+.gestion form{
+    width: 50%;
+    height: 300px;
+    background-color: rgb(150, 158, 147);
+}
+
+.gestion label{
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 auto;
+}
+
+.orden{
+    height: 100vh;
+}
+
+.orden-ticket{
+    width: 60%;
+    height: 400px;
+    background-color: beige;
+}
+
+.orden .check{
+    color: red;
+    border: 2px solid black;
+    border-radius: 50%;
+}
+
+.orden li{
+    font-size: 30px;
+    list-style: none;
+}
+
+.orden button{
+    height: 50%;
+    width: 30%;
+}
