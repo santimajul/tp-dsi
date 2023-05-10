@@ -1,35 +1,66 @@
-import { useEffect, useState } from 'react'
-import '../estilos/manager.css'
+import { useEffect, useState } from 'react';
+import '../estilos/manager.css';
+
+let ordenInicial = {
+    linea: null,
+    modelo: '',
+    color: ''
+};
 
 export default function Manager(){
 
-    let [orden,setOrden] = useState(false);
+    let [inicio,setinicio] = useState(false);
     let [estado,setEstado] = useState(''); 
     let [model,setModel] = useState('');
     let [color,setColor] = useState('');
-    let [lineCounter,setLineCounter] = useState(0);
+    let [line,setLine] = useState(0);
+    let [orden,setOrden] = useState(ordenInicial);
+    let [ordenes,setOrdenes] = useState([])
+
+    let colores = ['rojo','amarillo','azul','negro','blanco'];
+    let modelos = ['superstar','air-max','jordan-one','converse','KD-7'];
+    let lineas = [1,2,3,4,5,6];
+    
+    
     
     const handleModel = (e)=>{
-        setModel(e.target.value)
+        setModel(e.target.value);
+        setOrden({
+            ...orden,
+            [e.target.name]: e.target.value
+        });
     }
 
     const handleColor = (e)=>{
-        setColor(e.target.value)
+        setColor(e.target.value);
+        setOrden({
+            ...orden,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    const handleLine = (e)=>{
+        setLine(e.target.value);
+        setOrden({
+            ...orden,
+            [e.target.name]: e.target.value
+        });
     }
 
     const handleStart = (e)=>{
         e.preventDefault();
-        setLineCounter(lineCounter += 1)
-        setOrden(true);       
+        setOrdenes([...ordenes,orden])
+        setinicio(true);       
     }
 
-    const handleEnd = ()=>{
-        setOrden(false);
+    const handleEnd = (e)=>{
+        console.log(ordenes)
+        setinicio(false);
     }
 
     useEffect(()=>{
 
-        if(orden){
+        if(inicio){
             setEstado('Inicializada');
             document.querySelector('.check').style.color = 'rgb(68, 255, 0)';
             document.querySelector('.gestion').style.pointerEvents = 'none';
@@ -41,9 +72,9 @@ export default function Manager(){
             document.querySelector('.gestion').style.pointerEvents = 'auto';
         }
 
-        orden ? setEstado('Inicializada') : setEstado('Finalizada');
+        inicio ? setEstado('Inicializada') : setEstado('Finalizada');
 
-    },[orden])
+    },[inicio])
     return(
         <div className="container-fluid managment-container">
             <div className="row">
@@ -54,17 +85,24 @@ export default function Manager(){
                         </div>
                         <div className='row  d-flex justify-content-center align-items-center h-25'>
                             <label htmlFor='color-managment'>Gestionar color: </label>
-                            <select id='color-managment' onChange={handleColor} required>   
-                                <option value="" selected disabled hidden>Elija color...</option>      
-                                <option value='rojo'>rojo</option>
-                                <option value='amarillo'>amarillo</option>
-                                <option value='azul'>azul</option>
-                                <option value='negro'>negro</option>
+                            <select id='color-managment' name='color' onChange={handleColor} required> 
+                                <option defaultValue="" selected disabled hidden>Elija color...</option>  
+                                {colores.map( col => <option key={col} value={col}>{col}</option>)}
                             </select>
                         </div>
                         <div className='row  d-flex justify-content-center align-items-center h-25'>
                             <label htmlFor='model-managment' className='ms-5'>Gestionar modelo: </label>
-                            <input  id='model-managment' placeholder='Elija modelo...' className='w-75' type='text'  onChange={handleModel} required/>
+                            <select id='model-managment' name='modelo' onChange={handleModel} required> 
+                                <option defaultValue="" selected disabled hidden>Elija modelo...</option>  
+                                {modelos.map( mod => <option key={mod} value={mod}>{mod}</option>)}
+                            </select>
+                        </div>
+                        <div className='row  d-flex justify-content-center align-items-center h-25'>
+                            <label htmlFor='line-managment' className='ms-5'>Gestionar linea: </label>
+                            <select id='line-managment' name='linea' onChange={handleLine} required> 
+                                <option defaultValue="" selected disabled hidden>Elija linea de trabajo...</option>  
+                                {lineas.map( line => <option  key={line} value={line}>{line}</option>)}
+                            </select>
                         </div>
                         <div className='row  d-flex justify-content-center align-items-center h-25 '>
                             <input type='submit' value='Iniciar' />
@@ -85,7 +123,7 @@ export default function Manager(){
                             <ul>
                                 <li>Modelo: {model}</li>
                                 <li>Color: {color}</li>
-                                <li>Linea: {lineCounter !== 0 ? lineCounter : ''}</li>
+                                <li>Linea: {inicio !== false ? line : ''}</li>
                             </ul>
                         </div>
                         <div className='d-flex justify-content-center align-items-center h-25'>
@@ -97,3 +135,5 @@ export default function Manager(){
         </div>
     )
 }
+
+      
